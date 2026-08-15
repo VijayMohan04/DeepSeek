@@ -6,6 +6,8 @@ import { AppContextProvider } from "@/context/AppContext";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+  fallback: ["system-ui", "sans-serif"],
 });
 
 export const metadata = {
@@ -15,15 +17,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
-      <AppContextProvider>
-       <html lang="en">
-         <body className={`${inter.className}  antialiased`}
-         >
-         {children}
-        </body>
-      </html>
-     </AppContextProvider>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`${inter.className} antialiased`}>
+        <ClerkProvider>
+          <AppContextProvider>
+            {children}
+          </AppContextProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
