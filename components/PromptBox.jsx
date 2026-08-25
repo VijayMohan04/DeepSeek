@@ -23,6 +23,7 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
     try {
       e.preventDefault();
       if (!user) return toast.error("Login to send message");
+      if (!selectedChat) return toast.error("Please select or create a chat session first");
       if (isLoading)
         return toast.error("Wait for the previous prompt response");
 
@@ -68,7 +69,7 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
         );
 
         const message = data.data.content;
-        const messageTokens = message.split(" ");
+        const messageTokens = message ? message.split(" ") : [];
         let assistantMessage = {
           role: "assistant",
           content: "",
@@ -94,11 +95,11 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
           }, i * 100);
         }
       } else {
-        toast.error(data.message);
+        toast.error(data.message || data.error || "An error occurred");
         setPrompt(promptCopy);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
       setPrompt(promptCopy);
     } finally {
       setIsLoading(false);
